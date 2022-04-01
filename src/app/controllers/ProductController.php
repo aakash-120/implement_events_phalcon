@@ -5,6 +5,8 @@ use Phalcon\Mvc\Controller;
 
 class ProductController extends Controller
 {
+
+   
     public function indexAction()
     {
          $productTable = Products::find();

@@ -78,31 +78,40 @@ $container->set(
         }
 );
 
-$container->set(
-    'mongo',
-    function () {
-        $mongo = new MongoClient();
+// $container->set(
+//     'mongo',
+//     function () {
+//         $mongo = new MongoClient();
 
-        return $mongo->selectDB('phalt');
-    },
-    true
-);
+//         return $mongo->selectDB('phalt');
+//     },
+//     true
+// );
 
-
+$application = new Application($container);
 $eventManager = new EventsManager();
 $eventManager->attach(
     'notifications',
     new App\Listeners\notificationListeners()
 );
-
+$eventManager->attach(
+    'application:beforeHandleRequest',
+    new App\Listeners\notificationListeners()
+);
 $container->set(
     'eventManager',
     $eventManager
 );
 
-$application = new Application($container);
+$application->seteventsManager($eventManager);
 
-
+// $eventManager->attach(
+//     'db:afterQuery',
+//     function (Event $event, $connection) use ($logger)
+//     {
+//         $logger->error($connection->getSQLStatement());
+//     }
+// );
 
 try {
     // Handle the request
